@@ -1,32 +1,220 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Quora-like Practice Website</title>
-    <link rel="stylesheet" href="/style.css" />
-  </head>
-  <body>
-    <h1>Quora posts</h1>
-    <% for(let post of posts){ %>
-    <div class="post">
-      <h3 class="user">@<%= post.username %></h3>
-      <h4 class="content"><%= post.content %></h4>
-      <div class="buttons">
-        <a href="http://localhost:8080/posts/<%=post.id %>" id="view"
-          >View in Detail</a
-        >
-        <a href="http://localhost:8080/posts/<%=post.id %>/edit" id="view"
-          >edit</a
-        >
-        <br />
-        <form method="post" action="/posts/<%=post.id %>?_method=DELETE">
-          <button id="delete">delete</button>
-        </form>
-      </div>
-    </div>
-    <% }%>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Base Styles */
+        :root {
+            --primary-color: #2d3436;
+            --secondary-color: #0984e3;
+            --accent-color: #00b894;
+            --danger-color: #d63031;
+            --background-color: #f8f9fa;
+            --card-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
 
-    <a id="create" href="http://localhost:8080/posts/new">Create New Post</a>
-  </body>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--background-color);
+            padding: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        /* Posts Container */
+        .posts-container {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        /* Post Card */
+        .post {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: slideUp 0.6s ease;
+        }
+
+        .post:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+        }
+
+        .user {
+            color: var(--secondary-color);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .user::before {
+            content: "@";
+            color: #666;
+        }
+
+        .content {
+            color: var(--primary-color);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        /* Action Buttons */
+        .buttons {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-view {
+            background: var(--secondary-color);
+            color: white;
+        }
+
+        .btn-edit {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        .btn-delete {
+            background: var(--danger-color);
+            color: white;
+        }
+
+        .btn-create {
+            background: var(--secondary-color);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 10px;
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            box-shadow: var(--card-shadow);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-top: 2rem;
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        /* Hover Effects */
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+            opacity: 0.9;
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            body {
+                padding: 1rem;
+            }
+
+            .post {
+                padding: 1rem;
+            }
+
+            .buttons {
+                flex-wrap: wrap;
+            }
+
+            .btn {
+                flex: 1 1 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Community Discussions</h1>
+    <div class="posts-container">
+        <% for(let post of posts){ %>
+        <div class="post">
+            <h3 class="user"><%= post.username %></h3>
+            <p class="content"><%= post.content %></p>
+            <div class="buttons">
+                <a href="http://localhost:8080/posts/<%=post.id %>" class="btn btn-view">
+                    <i class="fas fa-eye"></i>
+                    View Post
+                </a>
+                <a href="http://localhost:8080/posts/<%=post.id %>/edit" class="btn btn-edit">
+                    <i class="fas fa-edit"></i>
+                    Edit
+                </a>
+                <form method="post" action="/posts/<%=post.id %>?_method=DELETE">
+                    <button type="submit" class="btn btn-delete">
+                        <i class="fas fa-trash"></i>
+                        Delete
+                    </button>
+                </form>
+            </div>
+        </div>
+        <% }%>
+    </div>
+
+    <a href="http://localhost:8080/posts/new" class="btn btn-create">
+        <i class="fas fa-plus"></i>
+        Create New Post
+    </a>
+</body>
 </html>

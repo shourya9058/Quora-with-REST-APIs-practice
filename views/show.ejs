@@ -1,18 +1,149 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Post Details</title>
-    <link rel="stylesheet" href="/style.css" />
-  </head>
-  <body>
-    <h2>Here is your Post details:</h2>
-    <hr />
-    <h3>id: <%=post.id %></h3>
-    <div class="post">
-      <h3 class="user">Username: @<%=post.username %></h3>
-      <h3 class="content">Content: <%=post.content %></h3>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2d3436;
+            --secondary-color: #0984e3;
+            --background-color: #f8f9fa;
+            --card-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            --border-radius: 12px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--background-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            animation: slideUp 0.6s ease;
+        }
+
+        h2 {
+            color: var(--primary-color);
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .divider {
+            height: 2px;
+            background: #e0e0e0;
+            margin: 1.5rem 0;
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .post-meta {
+            text-align: center;
+            color: #666;
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+        }
+
+        .post-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--card-shadow);
+            margin-top: 2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .post-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .user {
+            color: var(--secondary-color);
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .user i {
+            font-size: 1.4rem;
+        }
+
+        .content {
+            color: var(--primary-color);
+            line-height: 1.6;
+            font-size: 1.1rem;
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 1rem;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            h2 {
+                font-size: 1.75rem;
+            }
+
+            .post-card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Post Details</h2>
+        <div class="divider"></div>
+        
+        <div class="post-meta">
+            Post ID: <%=post.id %>
+        </div>
+
+        <div class="post-card">
+            <div class="user">
+                <i class="fas fa-user-circle"></i>
+                @<%=post.username %>
+            </div>
+            <div class="content">
+                <%=post.content %>
+            </div>
+        </div>
     </div>
-  </body>
+</body>
 </html>

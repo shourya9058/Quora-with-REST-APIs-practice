@@ -28,6 +28,7 @@ const express = require("express");
 const app = express();
 const port = 8080;
 const path = require("path");
+const mysql = require("mysql2");
 //requiring uuid (iski documentation se copy paste kiya h)
 const { v4: uuidv4 } = require('uuid');
 const methodOverride = require('method-override');
